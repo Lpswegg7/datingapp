@@ -33,12 +33,12 @@ app.get('/', function(req,res){
 // Insert
 app.post('/add', function(req,res){
     db.serialize(()=>{
-      db.run('INSERT INTO emp(id,name) VALUES(?,?)', [req.body.id, req.body.name], function(err) {
+      db.run('INSERT INTO users(id,name) VALUES(?,?)', [req.body.id, req.body.name], function(err) {
         if (err) {
           return console.log(err.message);
         }
-        console.log("New employee has been added");
-        res.send("New employee has been added into the database with ID = "+req.body.id+ " and Name = "+req.body.name);
+        console.log("New user has been added");
+        res.send("New user has been added into the database with ID = "+req.body.id+ " and Name = "+req.body.name);
       });
   });
   });
