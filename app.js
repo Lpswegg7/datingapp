@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname,'./public')));
 app.use(helmet());
 app.use(limiter);
 
-db.run('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT CHECK( LENGTH(name) <= 100 ) NOT NULL DEFAULT "",dOB DATE NOT NULL DEFAULT "",portrait BLOB NOT NULL,height INTEGER NULL DEFAULT NULL,bType TEXT CHECK( bType IN("A","B","AB","O")) NOT NULL DEFAULT "A",job TEXT CHECK( LENGTH(job) <= 50 ) NULL DEFAULT NULL)');
+db.run('CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name TEXT CHECK( LENGTH(name) <= 100 ) NOT NULL DEFAULT "",dOB DATE NOT NULL DEFAULT "",portrait BLOB NOT NULL,height INTEGER NULL DEFAULT NULL,bType TEXT CHECK( bType IN("A","B","AB","O")) NOT NULL DEFAULT "A",profession TEXT CHECK( LENGTH(profession) <= 30 ) NULL DEFAULT NULL, industry TEXT CHECK( LENGTH(industry) <= 30 ) NULL DEFAULT NULL, bPlace TEXT CHECK( LENGTH(bPlace) <= 30 ) NULL DEFAULT NULL,aIncome INTEGER NULL DEFAULT NULL, hobbies TEXT CHECK( LENGTH(hobbies) <= 20 ) NULL DEFAULT NULL)');
 
 app.get('/', function(req,res){
     res.sendFile(path.join(__dirname,'./page/index.html'));
@@ -33,7 +33,7 @@ app.get('/', function(req,res){
 // Insert
 app.post('/add', function(req,res){
     db.serialize(()=>{
-      db.run('INSERT INTO users(id,name) VALUES(?,?)', [req.body.id, req.body.name], function(err) {
+      db.run('INSERT INTO users(name,dOB,portrait,height,bType,profession,industry,bPlace,aIncome,hobbies) VALUES(?,?,?,?,?,?,?,?,?,?,?)', [req.body.id, req.body.name, req.body.dOB, req.body.height, req.body.bType, req.body.profession,req.body.industry,req.body.bPlace,req.body.aIncome,req.body.hobbies], function(err) {
         if (err) {
           return console.log(err.message);
         }
@@ -46,7 +46,7 @@ app.post('/add', function(req,res){
   // View
 app.post('/view', function(req,res){
     db.serialize(()=>{
-      db.each('SELECT id ID, name NAME FROM emp WHERE id =?', [req.body.id], function(err,row){     //db.each() is only one which is funtioning while reading data from the DB
+      db.each('SELECT id ID, name NAME FROM users WHERE id =?', [req.body.id], function(err,row){     //db.each() is only one which is funtioning while reading data from the DB
         if(err){
           res.send("Error encountered while displaying");
           return console.error(err.message);
