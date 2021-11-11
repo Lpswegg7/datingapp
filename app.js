@@ -34,7 +34,7 @@ app.get('/', function(req,res){
 // Insert
 app.post('/add', function(req,res){
     db.serialize(()=>{
-      db.run('INSERT INTO users(name,dOB,photo,height,bType,profession,industry,bPlace,aIncome,hobbies) VALUES(?,?,?,?,?,?,?,?,?,?)', [req.body.id, req.body.name, req.body.dOB, req.body.height, req.body.bType, req.body.profession,req.body.industry,req.body.bPlace,req.body.aIncome,req.body.hobbies], function(err) {
+      db.run('INSERT INTO users(name,dOB,photo,height,bType,profession,industry,bPlace,aIncome,hobbies) VALUES(?,?,?,?,?,?,?,?,?,?)', [req.body.name, req.body.dOB, req.body.height, req.body.bType, req.body.profession,req.body.industry,req.body.bPlace,req.body.aIncome,req.body.hobbies], function(err) {
         if (err) {
           return console.log(err.message);
         }
